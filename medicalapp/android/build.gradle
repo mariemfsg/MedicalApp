@@ -1,0 +1,36 @@
+// Configuration des outils de build
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+// Configuration des dépôts et des dépendances pour tous les modules
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Configuration du répertoire de build
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+
+// Dépendance d'évaluation des sous-projets
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+// Tâche pour nettoyer le répertoire de build
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
